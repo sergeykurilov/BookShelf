@@ -12,10 +12,13 @@ describe 'Books API', type:  :request do
   end
   describe 'POST /books' do
     it 'create a new book' do
-      expect {
-        post "/api/v1/books", params: { book: {title: '1925', author: 'Geador Well'} }
-      }.to change { Book.count }.from(0).to(1)
+      expect { post "/api/v1/books",  params: {
+        book: {title: '1925'},
+        author: {first_name: '1925', last_name: 'Geador Well', age: 52}
+      }}.to change { Book.count }.from(0).to(1)
+
       expect(response).to have_http_status(:created)
+      expect(Author.count).to eq(1)
     end
   end
   describe 'DELETE /books/:id' do
