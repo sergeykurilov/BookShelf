@@ -2,13 +2,15 @@ module Api
   module V1
       class BooksController < ApplicationController
         rescue_from ActiveRecord::RecordNotDestroyed, with: :not_destroyed
+        require_relative '../../../representers/books_representer'
 
         def index
-          render json: Book.all
+          books = Book.all
+          puts books
+          render json: BooksRepresenter.new(books).as_json
         end
 
         def create
-          #some logic
           book = Book.create(book_params)
 
           if book.save
